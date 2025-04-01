@@ -10,7 +10,7 @@ const SessionItem = ({ id }: { id: string }) => {
   const sessionId = location.pathname.split('/')[2];
   return (
     <Link
-      className={`cursor-pointer p-4 border hover:border-green-500 w-full ${
+      className={`text-center cursor-pointer p-4 border hover:border-green-500 w-full ${
         sessionId === id ? 'border-orange-500' : ''
       }`}
       key={id}
