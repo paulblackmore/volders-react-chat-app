@@ -15,6 +15,15 @@ This is a React-based chat application built with Vite, TypeScript, and React Qu
 - Paste contents into new `.env`
 - Replace the dummy VITE_API_URL with the url of your running backend server
 
+### Techstack
+
+- React query (api state management)
+- React router dom (sessionId as a param)
+- TailwindCSS (css utiliy classes)
+- React hook form (form state)
+- Zod (form validation)
+- uuid (unique id generation)
+
 ### Installation
 
 1. Clone the repository:
