@@ -1,4 +1,4 @@
 export * from './useFetchSessions';
-export * from './useGenerateNewChatSession';
+export * from './useNewSessionId';
 export * from './useCreateMessage';
 export * from './useFetchMessagesBySessionId';

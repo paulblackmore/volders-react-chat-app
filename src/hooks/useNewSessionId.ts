@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { generateNewChatSession } from '../services';
 
-export const useGenerateNewChatSession = () => {
+export const useNewSessionId = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

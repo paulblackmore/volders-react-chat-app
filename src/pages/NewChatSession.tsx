@@ -1,4 +1,4 @@
-import { useGenerateNewChatSession } from '../hooks';
+import { useNewSessionId } from '../hooks';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { Loading } from '../components/Loading';
@@ -7,7 +7,7 @@ import { StartNewChatSession } from '../features/sessions/StartNewChatSession';
 
 export const NewChatSession = () => {
   const navigate = useNavigate();
-  const { mutate, isPending, isError } = useGenerateNewChatSession();
+  const { mutate, isPending, isError } = useNewSessionId();
 
   const handleNewSession = () =>
     mutate(
