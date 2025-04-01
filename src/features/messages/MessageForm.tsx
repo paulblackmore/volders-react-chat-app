@@ -19,7 +19,7 @@ const messageSchema = z
 
 export const MessageForm = () => {
   const { sessionId } = useParams();
-  const { mutate } = useCreateMessage(sessionId || '');
+  const { mutate, status } = useCreateMessage(sessionId || '');
   const {
     register,
     handleSubmit,
@@ -31,6 +31,9 @@ export const MessageForm = () => {
       text: '',
     },
   });
+
+  // TODO use status to show messsage state and update message list cache
+  console.log(status);
 
   const onSubmit: SubmitHandler<Input> = ({ text }) => {
     if (sessionId) {
