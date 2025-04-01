@@ -37,11 +37,9 @@ const ChatForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    // TODO add sessionId to payload
+    // TODO add sessionId to payload & frontend generated id
     console.log(data);
   };
-
-  console.log(errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
