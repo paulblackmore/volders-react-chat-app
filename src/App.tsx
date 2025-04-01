@@ -1,3 +1,4 @@
+import { SessionList } from './components/SessionList';
 import { AppContainer } from './layout/AppContainer';
 import { Aside } from './layout/Aside';
 import { Section } from './layout/Section';
@@ -10,7 +11,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppContainer>
-        <Aside>sessionId</Aside>
+        <Aside>
+          <SessionList />
+        </Aside>
         <Section>
           <NewChatSession />
         </Section>
