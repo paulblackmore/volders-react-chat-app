@@ -10,8 +10,10 @@ export const createMesssage = (payload: MessageInput): Promise<MessageInput> =>
     body: JSON.stringify(payload),
   });
 
-export const fetchMessagesBySessionId = (): Promise<MessageFromApi[]> =>
-  handleFetchApi(`${import.meta.env.VITE_API_URL}/messages`, {
+export const fetchMessagesBySessionId = (
+  sessionId: string
+): Promise<MessageFromApi[]> =>
+  handleFetchApi(`${import.meta.env.VITE_API_URL}/messages/${sessionId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
