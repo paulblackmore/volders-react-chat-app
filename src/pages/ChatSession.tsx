@@ -12,7 +12,7 @@ import { MessageFromApi } from '../types/message';
 import { useCreateMessage } from '../hooks';
 import { v4 as uuidv4 } from 'uuid';
 
-type FormInputs = {
+type Input = {
   text: string;
 };
 
@@ -34,21 +34,22 @@ const MessageItem = ({ message }: { message: MessageFromApi }) => (
 
 const MessageForm = () => {
   const { sessionId } = useParams();
-  const createMessage = useCreateMessage(sessionId || '');
+  const { mutate } = useCreateMessage(sessionId || '');
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<FormInputs>({
+  } = useForm<Input>({
     resolver: zodResolver(messageSchema),
     defaultValues: {
       text: '',
     },
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = ({ text }) => {
+  const onSubmit: SubmitHandler<Input> = ({ text }) => {
     if (sessionId) {
-      createMessage.mutate({
+      mutate({
         sessionId,
         message: {
           id: uuidv4(),
@@ -56,6 +57,7 @@ const MessageForm = () => {
         },
       });
     }
+    reset();
   };
 
   return (
