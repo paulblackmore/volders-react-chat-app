@@ -2,15 +2,20 @@ import { AppContainer } from './layout/AppContainer';
 import { Aside } from './layout/Aside';
 import { Section } from './layout/Section';
 import { NewChatSession } from './pages/NewChatSession';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <AppContainer>
-      <Aside>sessionId</Aside>
-      <Section>
-        <NewChatSession />
-      </Section>
-    </AppContainer>
+    <QueryClientProvider client={queryClient}>
+      <AppContainer>
+        <Aside>sessionId</Aside>
+        <Section>
+          <NewChatSession />
+        </Section>
+      </AppContainer>
+    </QueryClientProvider>
   );
 }
 
