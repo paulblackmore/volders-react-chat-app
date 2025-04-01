@@ -1,0 +1,3 @@
+export const AppContainer = ({ children }: { children: React.ReactNode }) => (
+  <main className='grid grid-cols-3 gap-2'>{children}</main>
+);
