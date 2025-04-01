@@ -7,7 +7,8 @@ export const useCreateMessage = (sessionId: string) => {
   return useMutation({
     mutationKey: ['messages', sessionId],
     mutationFn: createMesssage,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ['messages', sessionId] }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages', sessionId] });
+    },
   });
 };
