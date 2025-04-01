@@ -1,8 +1,8 @@
-import { useFetchSessions } from '../hooks';
-import { Session } from '../types';
-import { Loading } from './Loading';
-import { Error } from './Error';
-import { EmptyChatHistory } from './EmptyChatHistory';
+import { useFetchSessions } from '../../hooks';
+import { Session } from '../../types';
+import { Loading } from '../../components/Loading';
+import { Error } from '../../components/Error';
+import { EmptyChatHistory } from '../../components/EmptyChatHistory';
 
 const SessionItem = ({ sessionId }: { sessionId: string }) => (
   // TODO: hightlight active chat
