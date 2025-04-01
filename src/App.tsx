@@ -2,7 +2,8 @@ import { SessionList } from './components/SessionList';
 import { AppContainer } from './layout/AppContainer';
 import { Aside } from './layout/Aside';
 import { Section } from './layout/Section';
-import { NewChatSession } from './pages/NewChatSession';
+import { ChatSession } from './pages/ChatSession';
+// import { NewChatSession } from './pages/NewChatSession';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -15,7 +16,8 @@ function App() {
           <SessionList />
         </Aside>
         <Section>
-          <NewChatSession />
+          {/* <NewChatSession /> */}
+          <ChatSession />
         </Section>
       </AppContainer>
     </QueryClientProvider>
