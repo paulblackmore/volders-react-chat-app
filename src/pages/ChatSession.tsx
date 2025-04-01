@@ -3,6 +3,14 @@ import { StyledButton } from '../components/StyledButton';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
+import { useParams } from 'react-router-dom';
+import { useFetchMessagesBySessionId } from '../hooks/useFetchMessagesBySessionId';
+import { Loading } from '../components/Loading';
+import { Error } from '../components/Error';
+import { EmptyChatHistory } from '../components/EmptyChatHistory';
+import { MessageFromApi } from '../types/message';
+import { useCreateMessage } from '../hooks';
+import { v4 as uuidv4 } from 'uuid';
 
 type FormInputs = {
   text: string;
@@ -14,17 +22,19 @@ const messageSchema = z
   })
   .strict();
 
-const ChatItem = () => (
+const MessageItem = ({ message }: { message: MessageFromApi }) => (
   <div className='flex flex-col justify-center items-center bg-slate-500 rounded-lg p-4 w-3/4 gap-4'>
-    <p>Chat Item</p>
+    <p>{message.text}</p>
     <footer className='flex justify-between w-full'>
-      <span className='text-sm'>time</span>
-      <span className='text-sm'>Status</span>
+      <span className='text-sm'>{message.timestamp}</span>
+      <span className='text-sm'>Sent</span>
     </footer>
   </div>
 );
 
-const ChatForm = () => {
+const MessageForm = () => {
+  const { sessionId } = useParams();
+  const createMessage = useCreateMessage(sessionId || '');
   const {
     register,
     handleSubmit,
@@ -36,9 +46,16 @@ const ChatForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    // TODO add sessionId to payload & frontend generated id
-    console.log(data);
+  const onSubmit: SubmitHandler<FormInputs> = ({ text }) => {
+    if (sessionId) {
+      createMessage.mutate({
+        sessionId,
+        message: {
+          id: uuidv4(),
+          text,
+        },
+      });
+    }
   };
 
   return (
@@ -60,14 +77,31 @@ const ChatForm = () => {
 };
 
 export const ChatSession = () => {
-  return (
+  const { sessionId } = useParams();
+  const {
+    data: messages,
+    isLoading,
+    isError,
+    isRefetching,
+  } = useFetchMessagesBySessionId(sessionId || '');
+
+  return isLoading || isRefetching ? (
+    <Loading />
+  ) : isError ? (
+    <Error />
+  ) : (
     <div className='flex flex-col justify-center items-center gap-4 h-screen'>
       <div className='flex flex-col gap-4 justify-start items-center h-screen w-full mt-4'>
-        {/* TODO: loop over chat items after fetching from api */}
-        <ChatItem />
+        {messages?.length ? (
+          messages.map((message: MessageFromApi) => (
+            <MessageItem key={message.id} message={message} />
+          ))
+        ) : (
+          <EmptyChatHistory />
+        )}
       </div>
       <footer className='fixed bottom-0 w-2/4 mb-4'>
-        <ChatForm />
+        <MessageForm />
       </footer>
     </div>
   );
