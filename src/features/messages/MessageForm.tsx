@@ -4,7 +4,7 @@ import { StyledButton } from '../../components/StyledButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { useParams } from 'react-router-dom';
-import { useCreateMessage } from '../../hooks';
+import { useCreateMessage, useFetchMessagesBySessionId } from '../../hooks';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
@@ -26,6 +26,7 @@ const MessageApiFailure = () => (
 
 export const MessageForm = () => {
   const { sessionId } = useParams();
+  const { isRefetching } = useFetchMessagesBySessionId(sessionId || '');
   const { mutate, isError, status, variables } = useCreateMessage(
     sessionId || ''
   );
@@ -73,7 +74,10 @@ export const MessageForm = () => {
         placeholder='Write your thoughts here...'
         {...register('text', { required: true })}
       />
-      <StyledButton type='submit' disabled={status === 'pending'}>
+      <StyledButton
+        type='submit'
+        disabled={status === 'pending' || isRefetching}
+      >
         Send
       </StyledButton>
     </form>
