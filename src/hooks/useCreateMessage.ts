@@ -46,11 +46,13 @@ export const useCreateMessage = (sessionId: string) => {
           )
       );
     },
-    onSettled: () => {
+    onSettled: (_, error) => {
       // Invalidate messages cache when mutatuon has settled
-      queryClient.invalidateQueries({
-        queryKey: ['messages', sessionId],
-      });
+      if (!error) {
+        queryClient.invalidateQueries({
+          queryKey: ['messages', sessionId],
+        });
+      }
     },
   });
 };
