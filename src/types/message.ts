@@ -12,4 +12,5 @@ export type MessageFromApi = {
   text: string;
   backendId: string;
   timestamp: string;
+  status?: string;
 };

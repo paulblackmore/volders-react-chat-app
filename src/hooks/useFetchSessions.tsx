@@ -4,6 +4,6 @@ import { fetchSessions } from '../services';
 export const useFetchSessions = () => {
   return useQuery({
     queryKey: ['sessions'],
-    queryFn: () => fetchSessions(),
+    queryFn: fetchSessions,
   });
 };
