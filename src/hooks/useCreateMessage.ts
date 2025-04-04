@@ -8,19 +8,49 @@ export const useCreateMessage = (sessionId: string) => {
   return useMutation({
     mutationKey: ['messages', sessionId],
     mutationFn: createMesssage,
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['messages', sessionId] });
-    },
-    onMutate: (variables) => {
-      // Optimistic update of message state
-      // TODO add mutation status to chache
+    retry: 0, // stop retrying mutation
+    onMutate: (res) => {
+      // Optimistic update of message cache
       queryClient.setQueryData(
         ['messages', sessionId],
         (prevMessages: MessageFromApi[]) => [
           ...prevMessages,
-          { ...variables.message },
+          {
+            ...res.message,
+            timestamp: new Date().getTime(),
+            status: 'pending', // set status to pending when performing optimistic update
+          },
         ]
       );
+    },
+    onSuccess: (_, res) => {
+      // Update message status in cache when successfully sent
+      queryClient.setQueryData(
+        ['messages', sessionId],
+        (prevMessages: MessageFromApi[]) =>
+          prevMessages.map((prevMessage) => {
+            if (prevMessage.id === res.message.id) {
+              return { ...prevMessage, status: 'sent' };
+            }
+            return prevMessage;
+          })
+      );
+    },
+    onError: (_, res) => {
+      // Remove message from cache if process failed
+      queryClient.setQueryData(
+        ['messages', sessionId],
+        (prevMessages: MessageFromApi[]) =>
+          prevMessages.filter(
+            (prevMessage) => prevMessage.id !== res.message.id
+          )
+      );
+    },
+    onSettled: () => {
+      // Invalidate messages cache when mutatuon has settled
+      queryClient.invalidateQueries({
+        queryKey: ['messages', sessionId],
+      });
     },
   });
 };

@@ -8,11 +8,11 @@ import { Link, useLocation } from 'react-router-dom';
 const SessionItem = ({ id }: { id: string }) => {
   const location = useLocation();
   const sessionId = location.pathname.split('/')[2];
+  const activeSession = sessionId === id ? 'border-orange-500' : '';
+
   return (
     <Link
-      className={`text-center cursor-pointer p-4 border hover:border-green-500 w-full ${
-        sessionId === id ? 'border-orange-500' : ''
-      }`}
+      className={`text-center cursor-pointer p-4 border hover:border-green-500 w-full ${activeSession}`}
       key={id}
       to={{
         pathname: `session/${id}`,

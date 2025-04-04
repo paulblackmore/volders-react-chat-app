@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { StyledButton } from '../../components/StyledButton';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { useParams } from 'react-router-dom';
 import { useCreateMessage } from '../../hooks';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 
 type Input = {
   text: string;
@@ -17,9 +18,18 @@ const messageSchema = z
   })
   .strict();
 
+const MessageApiFailure = () => (
+  <p className='text-red-500'>
+    Error while sending message, click send to retry
+  </p>
+);
+
 export const MessageForm = () => {
   const { sessionId } = useParams();
-  const { mutate, status } = useCreateMessage(sessionId || '');
+  const { mutate, isError, status, variables } = useCreateMessage(
+    sessionId || ''
+  );
+  const borderColor = isError ? 'border-red-600' : 'border-gray-600';
   const {
     register,
     handleSubmit,
@@ -32,8 +42,12 @@ export const MessageForm = () => {
     },
   });
 
-  // TODO use status to show messsage state and update message list cache
-  console.log(status);
+  useEffect(() => {
+    // reset form with previous value if mutation fails
+    if (isError) {
+      reset({ text: variables.message.text });
+    }
+  }, [isError, variables, reset]);
 
   const onSubmit: SubmitHandler<Input> = ({ text }) => {
     if (sessionId) {
@@ -45,23 +59,23 @@ export const MessageForm = () => {
         },
       });
     }
-    reset();
+    reset({ text: '' });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {isError ? <MessageApiFailure /> : null}
       <ErrorMessage errors={errors} name='text' />
-      <label
-        htmlFor='message'
-        className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-      />
+      <label htmlFor='message' />
       <input
         id='message'
-        className='block p-2.5 w-full mb-4 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+        className={`block p-2.5 w-full mb-4 text-sm rounded-lg border bg-gray-700 ${borderColor}  placeholder-gray-400 text-white`}
         placeholder='Write your thoughts here...'
         {...register('text', { required: true })}
       />
-      <StyledButton type='submit'>Send</StyledButton>
+      <StyledButton type='submit' disabled={status === 'pending'}>
+        Send
+      </StyledButton>
     </form>
   );
 };
