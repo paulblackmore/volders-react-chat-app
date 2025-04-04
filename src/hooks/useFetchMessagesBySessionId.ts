@@ -6,5 +6,8 @@ export const useFetchMessagesBySessionId = (sessionId: string) => {
     queryKey: ['messages', sessionId],
     queryFn: () => fetchMessagesBySessionId(sessionId),
     enabled: !!sessionId,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 };
