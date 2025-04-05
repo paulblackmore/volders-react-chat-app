@@ -3,6 +3,7 @@ import { useFetchMessagesBySessionId } from '../../hooks/useFetchMessagesBySessi
 import { EmptyChatHistory } from '../../components/EmptyChatHistory';
 import { MessageFromApi } from '../../types/message';
 import { messageStatusIndicator } from '../../helpers';
+import { MessageItem as Message } from './MessageItem';
 
 const MessageItem = ({ message }: { message: MessageFromApi }) => {
   const messagePosition = message.kind ? 'items-end' : 'items-start';
@@ -16,20 +17,14 @@ const MessageItem = ({ message }: { message: MessageFromApi }) => {
     : 'sent';
 
   return (
-    <div className={`flex flex-col gap-4 ${messagePosition} w-210`}>
-      <div
-        className={`flex flex-col justify-center items-center ${messageBgColor} rounded-lg p-2 w-1/2 gap-1`}
-      >
-        <p className='font-semibold p-1'>{message.text}</p>
-        <footer className='flex justify-between w-full'>
-          <span className='text-xs'>{message.timestamp}</span>
-          <span className='text-xs text-transform: capitalize'>
-            {/* TODO: ask for status to be added to message entity */}
-            {messageStatus}
-          </span>
-        </footer>
-      </div>
-    </div>
+    <Message position={messagePosition} BgColor={messageBgColor}>
+      <Message.Text text={message.text} />
+      <Message.Footer>
+        <Message.TimeStamp timestamp={message.timestamp} />
+        {/* TODO: ask for status to be added to message entity */}
+        <Message.Status status={messageStatus} />
+      </Message.Footer>
+    </Message>
   );
 };
 
