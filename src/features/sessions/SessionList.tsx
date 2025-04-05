@@ -4,10 +4,15 @@ import { Loading } from '../../components/Loading';
 import { Error } from '../../components/Error';
 import { EmptyChatHistory } from '../../components/EmptyChatHistory';
 import { Link, useLocation } from 'react-router-dom';
+import { getSessionId } from '../../utils';
 
-const SessionItem = ({ id }: { id: string }) => {
+type Props = {
+  id: string;
+};
+
+const SessionItem = ({ id }: Props) => {
   const location = useLocation();
-  const sessionId = location.pathname.split('/')[2];
+  const sessionId = getSessionId(location);
   const activeSession = sessionId === id ? 'border-orange-500' : '';
 
   return (
