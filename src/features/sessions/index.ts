@@ -1,3 +1,3 @@
 export * from './GenerateNewSession';
-export * from './SessionList';
-export * from './SessionHistory';
+export * from './SessionHistoryList';
+export * from './SessionHistoryHeader';

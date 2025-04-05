@@ -28,7 +28,7 @@ const SessionItem = ({ id }: Props) => {
   );
 };
 
-export const SessionList = () => {
+export const SessionHistoryList = () => {
   const { data: sessions, isLoading, isError } = useFetchSessions();
 
   return isLoading ? (
