@@ -18,7 +18,7 @@ export const useCreateMessage = (sessionId: string) => {
           {
             ...res.message,
             timestamp: new Date().getTime(),
-            status: 'pending', // set status to pending when performing optimistic update
+            status: 'sending', // set status to sending when performing optimistic update
           },
         ]
       );

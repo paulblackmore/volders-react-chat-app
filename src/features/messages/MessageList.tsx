@@ -9,6 +9,11 @@ const MessageItem = ({ message }: { message: MessageFromApi }) => {
   const messageBgColor = message.status
     ? messageStatusIndicator[message.status]
     : 'bg-green-600';
+  const messageStatus = message.kind
+    ? 'recived'
+    : message.status
+    ? message.status
+    : 'sent';
 
   return (
     <div className={`flex flex-col gap-4 ${messagePosition} w-210`}>
@@ -20,7 +25,7 @@ const MessageItem = ({ message }: { message: MessageFromApi }) => {
           <span className='text-xs'>{message.timestamp}</span>
           <span className='text-xs text-transform: capitalize'>
             {/* TODO: ask for status to be added to message entity */}
-            {message.status ? message.status : 'sent'}
+            {messageStatus}
           </span>
         </footer>
       </div>
