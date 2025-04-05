@@ -2,8 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useFetchMessagesBySessionId } from '../hooks/useFetchMessagesBySessionId';
 import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
-import { MessageForm } from '../features/messages/MessageForm';
-import { MessageList } from '../features/messages/MessageList';
+import { MessageList, MessageForm } from '../features/messages';
 
 export const ChatSession = () => {
   const { sessionId } = useParams();

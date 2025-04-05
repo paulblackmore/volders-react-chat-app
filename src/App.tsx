@@ -1,4 +1,4 @@
-import { SessionList } from './features/sessions/SessionList';
+import { SessionList, SessionHistory } from './features/sessions';
 import { AppContainer } from './layout/AppContainer';
 import { Aside } from './layout/Aside';
 import { Section } from './layout/Section';
@@ -16,6 +16,7 @@ function App() {
       <BrowserRouter>
         <AppContainer>
           <Aside>
+            <SessionHistory />
             <SessionList />
           </Aside>
           <Section>
