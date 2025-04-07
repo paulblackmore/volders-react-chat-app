@@ -34,7 +34,7 @@ export const MessageList = () => {
   return (
     <div className='h-screen w-full mt-4'>
       {messages?.length ? (
-        <div className='flex flex-col justify-start items-center w-full h-6/7 overflow-y-scroll'>
+        <div className='flex flex-col justify-start items-center w-full h-185 overflow-y-scroll'>
           {messages.map((message: MessageFromApi) => (
             <MessageItem key={message.id} message={message} />
           ))}
