@@ -39,11 +39,9 @@ export const useCreateMessage = (sessionId: string) => {
           })
       );
       // Invalidate messages cache when mutatuon has settled
-      // if (!error) {
       queryClient.invalidateQueries({
         queryKey: ['messages', sessionId],
       });
-      // }
     },
     onError: (_, res) => {
       // Remove message from cache if process failed

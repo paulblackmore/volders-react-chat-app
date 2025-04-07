@@ -6,6 +6,7 @@ import { messageStatusIndicator } from '../../helpers';
 import { MessageItem as Message } from './MessageItem';
 
 const MessageItem = ({ message }: { message: MessageFromApi }) => {
+  // Move to helpers folder if used in multiple places
   const messagePosition = message.kind ? 'items-end' : 'items-start';
   const messageBgColor = message.status
     ? messageStatusIndicator[message.status]
