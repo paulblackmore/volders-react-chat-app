@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createMesssage } from '../services';
 import { MessageFromApi } from '../types/message';
+import { FailedMessageContext } from '../features/messages/contexts';
 
 export const useCreateMessage = (sessionId: string) => {
   const queryClient = useQueryClient();
+  const { setFailedMessages } = useContext(FailedMessageContext);
 
   return useMutation({
     mutationKey: ['messages', sessionId],
@@ -35,6 +38,12 @@ export const useCreateMessage = (sessionId: string) => {
             return prevMessage;
           })
       );
+      // Invalidate messages cache when mutatuon has settled
+      // if (!error) {
+      queryClient.invalidateQueries({
+        queryKey: ['messages', sessionId],
+      });
+      // }
     },
     onError: (_, res) => {
       // Remove message from cache if process failed
@@ -45,14 +54,8 @@ export const useCreateMessage = (sessionId: string) => {
             (prevMessage) => prevMessage.id !== res.message.id
           )
       );
-    },
-    onSettled: (_, error) => {
-      // Invalidate messages cache when mutatuon has settled
-      if (!error) {
-        queryClient.invalidateQueries({
-          queryKey: ['messages', sessionId],
-        });
-      }
+      // Add failed message content to failed message context
+      setFailedMessages((prevMessages) => [...prevMessages, { ...res }]);
     },
   });
 };
