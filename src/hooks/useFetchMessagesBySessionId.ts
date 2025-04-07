@@ -6,6 +6,7 @@ export const useFetchMessagesBySessionId = (sessionId: string) => {
     queryKey: ['messages', sessionId],
     queryFn: () => fetchMessagesBySessionId(sessionId),
     enabled: !!sessionId,
+    // disable aggresive refetching
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
