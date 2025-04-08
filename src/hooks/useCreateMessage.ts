@@ -20,7 +20,7 @@ export const useCreateMessage = (sessionId: string) => {
           ...prevMessages,
           {
             ...res.message,
-            timestamp: new Date().getTime(),
+            timestamp: new Date().getTime(), // add temporary timestamp to match UI
             status: 'sending', // set status to sending when performing optimistic update
           },
         ]
