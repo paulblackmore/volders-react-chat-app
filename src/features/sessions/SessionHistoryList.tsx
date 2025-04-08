@@ -19,9 +19,7 @@ const SessionItem = ({ id }: Props) => {
     <Link
       className={`text-center cursor-pointer p-4 border hover:border-green-500 w-full ${activeSession}`}
       key={id}
-      to={{
-        pathname: `session/${id}`,
-      }}
+      to={`session/${id}`}
     >
       {id}
     </Link>
